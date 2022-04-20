@@ -1,9 +1,10 @@
 import { readdirSync, readFileSync, writeFileSync } from 'fs';
 import _ from 'lodash'
+import { __dirname } from './dirname.js'
 
 (async() => {
 
-    let DIR = readdirSync(`C:\\dev\\20220419-duplicate-enrolments\\`).filter( i => i.match(/-data/gi)).map( i => {
+    let DIR = readdirSync(`${__dirname}/`).filter( i => i.match(/-data/gi)).map( i => {
         return {
             filename : i,
             order : parseInt(i.replace(/\W/gi, ''))
@@ -13,11 +14,11 @@ import _ from 'lodash'
     DIR = _.sortBy(DIR,'order')
 
     let ALL_DATA = await Promise.all(_.map(DIR, DIR => {
-       return JSON.parse(readFileSync(`C:\\dev\\20220419-duplicate-enrolments\\${DIR.filename}`, 'utf-8'))
+       return JSON.parse(readFileSync(`${__dirname}/${DIR.filename}`, 'utf-8'))
     }))
 
     let FLATTED = _.flatMap(ALL_DATA);
 
-    writeFileSync(`C:\\dev\\20220419-duplicate-enrolments\\combined.json`, JSON.stringify(FLATTED, null, 2), 'utf-8')
+    writeFileSync(`${__dirname}/combined.json`, JSON.stringify(FLATTED, null, 2), 'utf-8')
 
 })()

@@ -2,6 +2,7 @@ import { writeFileSync } from 'fs';
 import { got } from 'got';
 import * as _ from 'lodash';
 import * as dotenv from 'dotenv'
+import { __dirname } from './dirname.js'
 
 dotenv.config()
 
@@ -13,11 +14,9 @@ const { WISENET_API_KEY } = process.env;
     let done = true;
     while (done) {
         const data = await getEnrolments(skip)
-        
-        console.log(skip, data.length)
 
         if (data.length > 0) {
-            writeFileSync(`C:\\dev\\20220419-duplicate-enrolments\\${skip}-data.json`, JSON.stringify(data, null, 2), 'utf-8')
+            writeFileSync(`${__dirname}/${skip}-data.json`, JSON.stringify(data, null, 2), 'utf-8')
             skip = skip + data.length
         } else {
             done = false

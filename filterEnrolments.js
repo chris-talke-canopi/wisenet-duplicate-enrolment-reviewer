@@ -1,9 +1,10 @@
 import { readFileSync, writeFileSync } from 'fs';
 import _ from 'lodash'
+import { __dirname } from './dirname.js'
 
 (async() => {
 
-    const ENROLMENTS = JSON.parse(readFileSync(`C:\\dev\\20220419-duplicate-enrolments\\data.json`, 'utf-8'));
+    const ENROLMENTS = JSON.parse(readFileSync(`${__dirname}/data.json`, 'utf-8'));
 
     const ENROLMENTS_BY_LEARNER = _.groupBy(ENROLMENTS, 'Data.LearnerId');
 
@@ -21,7 +22,7 @@ import _ from 'lodash'
         return learnerHasDuplicateEnrolment
     })
 
-    writeFileSync(`C:\\dev\\20220419-duplicate-enrolments\\duplicates.json`, JSON.stringify(_.flatMap(LEARNERS_WITH_DUPLICATE_ENROLMENTS), null, 2), 'utf-8')
+    writeFileSync(`${__dirname}/duplicates.json`, JSON.stringify(_.flatMap(LEARNERS_WITH_DUPLICATE_ENROLMENTS), null, 2), 'utf-8')
     
     const CSV_OUTPUT = [`LearnerId,Email,CourseOffer\n`];
     _.forEach(LEARNERS_WITH_DUPLICATE_ENROLMENTS, l => {
@@ -31,6 +32,6 @@ import _ from 'lodash'
         }
     })
     
-    writeFileSync(`C:\\dev\\20220419-duplicate-enrolments\\duplicates.csv`, CSV_OUTPUT.join(), 'utf-8')
+    writeFileSync(`${__dirname}/duplicates.csv`, CSV_OUTPUT.join(), 'utf-8')
 
 })()
